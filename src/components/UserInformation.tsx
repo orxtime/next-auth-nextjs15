@@ -14,7 +14,11 @@ const UserInformation = () => {
           Email<span className="font-bold">{session?.user?.email}</span>
         </div>
         <button
-          onClick={() => signOut()}
+          onClick={() =>
+            signOut({
+              callbackUrl: "/", // Redirect to this page after logout
+            })
+          }
           className="flex justify-center font-semibold border items-center gap-2 rounded-md py-2 px-8 w-full text-[16px]  cursor-pointer bg-[#f55418] hover:bg-transparent border-[#f55418] text-white ring-[#f55418]/20 hover:text-[#f55418]"
         >
           Log Out

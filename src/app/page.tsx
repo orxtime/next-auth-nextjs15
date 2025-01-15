@@ -1,6 +1,6 @@
-"use client"
-import LoginForm from "@/components/LoginForm";
+"use client";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -13,10 +13,17 @@ export default function Home() {
       router.push("/dashboard");
     }
   }, [session, status, router]);
+
   return (
     <>
-      <main>
-        <LoginForm />
+      <main className="flex h-screen w-screen items-center justify-center">
+        {/* <LoginForm /> */}
+        <Link
+          href="/dashboard"
+          className="py-3 px-4 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-lg"
+        >
+          Dashboard
+        </Link>
       </main>
     </>
   );

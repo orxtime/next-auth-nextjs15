@@ -1,47 +1,29 @@
 import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import KeycloakProvider from "next-auth/providers/keycloak";
 import { NextAuthOptions } from "next-auth";
-import { connectMongoDB } from "@/lib/mongodb";
-import User from "@/models/user";
-import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {},
-      async authorize(credentials) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
-        try {
-          await connectMongoDB();
-          const user = await User.findOne({ email });
-
-          if (!user) {
-            return null;
-          }
-
-          const passwordsMatch = await bcrypt.compare(password, user.password);
-          if (!passwordsMatch) {
-            return null;
-          }
-
-          return user;
-        } catch (error) {
-          console.error("Error: ", error);
-        }
-      },
+    // Credentials with mongodb here:
+    // https://github.com/orxtime/next-auth-nextjs15
+    //
+    //
+    KeycloakProvider({
+      clientId: process.env.AUTH_KEYCLOAK_ID || "dir-app",
+      clientSecret:
+        process.env.AUTH_KEYCLOAK_SECRET || "I62liBln3PeAUeoWBU20RdzEvmMHBeVP",
+      issuer:
+        process.env.AUTH_KEYCLOAK_ISSUER ||
+        "http://192.186.5.55:8080/realms/br30",
     }),
   ],
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/",
-  },
+  // pages: {
+  //   signIn: "/",
+  // },
 };
 
 const handler = NextAuth(authOptions);
