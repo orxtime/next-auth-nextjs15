@@ -9,21 +9,18 @@ export const authOptions: NextAuthOptions = {
     //
     //
     KeycloakProvider({
-      clientId: process.env.AUTH_KEYCLOAK_ID || "dir-app",
-      clientSecret:
-        process.env.AUTH_KEYCLOAK_SECRET || "I62liBln3PeAUeoWBU20RdzEvmMHBeVP",
-      issuer:
-        process.env.AUTH_KEYCLOAK_ISSUER ||
-        "http://192.186.5.55:8080/realms/br30",
+      clientId: process.env.AUTH_KEYCLOAK_ID || "",
+      clientSecret: process.env.AUTH_KEYCLOAK_SECRET || "",
+      issuer: process.env.AUTH_KEYCLOAK_ISSUER || "",
     }),
   ],
   session: {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-  // pages: {
-  //   signIn: "/",
-  // },
+  pages: {
+    signIn: "/signin",
+  },
 };
 
 const handler = NextAuth(authOptions);
